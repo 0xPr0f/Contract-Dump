@@ -70,6 +70,7 @@ contract AgreementStream is SuperAppBase {
         int96 flowRateto
     );
 
+    /// @dev require that the Id has info for approval
     modifier makeSureAgreementExist(uint256 _id) {
         require(_id != 0, "Out of range ID index");
         require(_id <= NextID, "Out of range ID index");
@@ -81,7 +82,7 @@ contract AgreementStream is SuperAppBase {
         );
         _;
     }
-
+    /// @dev only the sender address can call
     modifier IdownerIsOG(uint256 _id) {
         require(
             IdtoAgreements[_id].from == msg.sender,
@@ -89,7 +90,7 @@ contract AgreementStream is SuperAppBase {
         );
         _;
     }
-
+    /// @dev only the reciever address or sender address can call
     modifier IsAgreedOn(uint256 _id) {
         require(
             IdtoAgreements[_id].from == msg.sender ||
@@ -98,7 +99,7 @@ contract AgreementStream is SuperAppBase {
         );
         _;
     }
-
+    /// @dev only the reciever address or approvedAddress can call
     modifier recieverAcceptance(uint256 _id) {
         require(
             IdtoAgreements[_id].to == msg.sender ||
@@ -108,6 +109,7 @@ contract AgreementStream is SuperAppBase {
         _;
     }
 
+    /// @dev look for an element by value from an array and then pop it out when done
     function removeItemIndex(uint256 _element, uint256[] storage _array)
         private
         returns (bool)
@@ -125,6 +127,8 @@ contract AgreementStream is SuperAppBase {
     //1).
     // call an approve function here to approve the super token
     // cal authorise flow with operator on the supertoken
+    /// @dev This is for userA to request 2 way simultanious stream from a userB
+    /// @params These are detials of the stream, some may not be strictly followed
     function requestAgreement(
         address to,
         uint256 amountFrom,
@@ -176,6 +180,8 @@ contract AgreementStream is SuperAppBase {
     //2).
     // call approve here to approve the super token
     // cal authorise flow with operator on the supertoken
+    /// @dev This is for userB to accept the 2 way simultanious stream from a userA
+    /// @param _id ID of the stream for acceptance
     function acceptRequestAgreement(uint256 _id)
         external
         makeSureAgreementExist(_id)
@@ -204,6 +210,7 @@ contract AgreementStream is SuperAppBase {
         );
     }
 
+    /// @dev View all the Id sent to an address for approval
     function pendingAgreements(address from)
         external
         view
@@ -212,6 +219,8 @@ contract AgreementStream is SuperAppBase {
         idarray = pendingAgreementsList[from];
     }
 
+    /// @dev see the stream details for any Id
+    /// @param _id ID of the stream to get the details
     function seeAgreementsById(uint256 _id)
         external
         view
@@ -221,6 +230,9 @@ contract AgreementStream is SuperAppBase {
         return IdtoAgreements[_id];
     }
 
+    /// @dev Approve an address to manage some fucntions
+    /// @param _addressToApprove address to give approval power to
+    /// @notice This may only work for some fucntions not all
     function approveAddressToManageStuffs(address _addressToApprove) external {
         require(
             _addressToApprove != address(0) || _addressToApprove != msg.sender
@@ -230,6 +242,9 @@ contract AgreementStream is SuperAppBase {
         ][_addressToApprove];
     }
 
+    /// @dev Start the two way stream userA -> userB and UserB -> userA
+    /// @param _id ID of the stream to activate
+    /// @notice This will only work when the other party has accepted the stream
     function activateFlowbyFlowStream(uint256 _id)
         external
         makeSureAgreementExist(_id)
@@ -252,6 +267,7 @@ contract AgreementStream is SuperAppBase {
         );
     }
 
+    /// @dev Cancel and terminate the stream for the two parties with the streamId
     function cancelStreamsbyID(uint256 _id)
         external
         makeSureAgreementExist(_id)
@@ -260,6 +276,9 @@ contract AgreementStream is SuperAppBase {
         _cancelStreamsbyID(_id);
     }
 
+    /// @dev Cancel and terminate the stream for the two parties
+    /// @param _id ID of the stream to terminate
+    /// @notice This will cancel the stream for both parties
     function _cancelStreamsbyID(uint256 _id)
         private
         makeSureAgreementExist(_id)
@@ -284,6 +303,8 @@ contract AgreementStream is SuperAppBase {
         return abi.encode(ctx1, ctx2);
     }
 
+    /// @dev SuperApp callback to be triggered when one party has terminated the stream which should give out the Id for both connection streams to be deleted and stopped
+    /// @notice This might not work 100% well, due to maybe the misdecode of `_ctx`
     function afterAgreementTerminated(
         ISuperToken, /* _superToken*/
         address, /*_agreementClass*/
@@ -297,6 +318,7 @@ contract AgreementStream is SuperAppBase {
         newCtx = _cancelStreamsbyID(_id);
     }
 
+    /// @dev get the flow details of a particular connection
     function getFlowInfo(
         address _checker,
         address _receiverFromChecker,
@@ -322,6 +344,7 @@ contract AgreementStream is SuperAppBase {
         }
     }
 
+    /// @dev make sure only the superfluid host calls the fucntion (callback)
     modifier onlyHost() {
         require(
             msg.sender == address(cfaV1Lib.host),
