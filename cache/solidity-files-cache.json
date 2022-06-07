@@ -648,8 +648,8 @@
       "artifacts": {}
     },
     "/Users/praise/Documents/Professional Code/Contract-Dump/src/Contract.sol": {
-      "lastModificationDate": 1654619771334,
-      "contentHash": "a806aa1770a1bcad558d7ebb4569617f",
+      "lastModificationDate": 1654621327871,
+      "contentHash": "cc3e474fbecb65888fa6b59bd48803cb",
       "sourceName": "src/Contract.sol",
       "solcConfig": {
         "settings": {
@@ -677,7 +677,7 @@
         }
       },
       "imports": [],
-      "versionRequirement": "=0.8.7",
+      "versionRequirement": "=0.8.13",
       "artifacts": {
         "Contract": {
           "0.8.13+commit.abaa5c0e.Darwin.appleclang": "Contract.sol/Contract.json"
@@ -685,8 +685,8 @@
       }
     },
     "/Users/praise/Documents/Professional Code/Contract-Dump/src/test/Contract.t.sol": {
-      "lastModificationDate": 1654619460659,
-      "contentHash": "7016738fe305fd90c36ea69a5cb2a78c",
+      "lastModificationDate": 1654621533110,
+      "contentHash": "873e6232090a6fdc6d20736f5b399201",
       "sourceName": "src/test/Contract.t.sol",
       "solcConfig": {
         "settings": {
@@ -716,7 +716,7 @@
       "imports": [
         "lib/ds-test/src/test.sol"
       ],
-      "versionRequirement": "=0.8.10",
+      "versionRequirement": "=0.8.13",
       "artifacts": {
         "ContractTest": {
           "0.8.13+commit.abaa5c0e.Darwin.appleclang": "Contract.t.sol/ContractTest.json"
