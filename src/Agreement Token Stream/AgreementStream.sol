@@ -1,6 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
+/// @title AgreementStream
+/// @author 0xPr0f
+/// @notice Basic token streaming from a user to another user and vice versa simultaneously exchanging tokens based on an agreement
+
 import {ISuperfluid, ISuperToken, ISuperApp, ISuperAgreement, SuperAppDefinitions} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import {CFAv1Library} from "@superfluid-finance/ethereum-contracts/contracts/apps/CFAv1Library.sol";
 import {IConstantFlowAgreementV1} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementV1.sol";
@@ -128,7 +132,7 @@ contract AgreementStream is SuperAppBase {
     // call an approve function here to approve the super token
     // cal authorise flow with operator on the supertoken
     /// @dev This is for userA to request 2 way simultanious stream from a userB
-    /// @params These are detials of the stream, some may not be strictly followed
+    /// params These are detials of the stream, some may not be strictly followed
     function requestAgreement(
         address to,
         uint256 amountFrom,
@@ -180,7 +184,7 @@ contract AgreementStream is SuperAppBase {
     //2).
     // call approve here to approve the super token
     // cal authorise flow with operator on the supertoken
-    /// @dev This is for userB to accept the 2 way simultanious stream from a userA
+    /// @dev This is for userB to accept the 2 way simultaneous stream from a userA
     /// @param _id ID of the stream for acceptance
     function acceptRequestAgreement(uint256 _id)
         external
