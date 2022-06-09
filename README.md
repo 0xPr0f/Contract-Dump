@@ -1,4 +1,4 @@
-# Contract Dump
+# Contracts Dump
 
 This is a repo for dumping most of my part time smart contract code, they are usually about integrating protocols to do stuffs.
 
